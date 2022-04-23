@@ -1,0 +1,24 @@
+{
+  "rewrites": [
+    {
+      "source":  "/books/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source":  "/sections/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source":  "/fetch_books",
+      "destination": "FLASHCARD_API_URL/books"
+    },
+    {
+      "source":  "/fetch_sections/:path*",
+      "destination": "FLASHCARD_API_URL/books/:path*"
+    },
+    {
+      "source":  "/fetch_section/:path*",
+      "destination": "FLASHCARD_API_URL/sections/:path*"
+    }
+  ]
+}

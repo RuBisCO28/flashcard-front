@@ -17,7 +17,7 @@ export default defineComponent({
   name: 'sectionList',
   props: {
     id: {
-      type: Number,
+      type: String,
     }
   },
   setup(props) {

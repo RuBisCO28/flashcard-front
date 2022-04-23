@@ -1,14 +1,15 @@
 <script setup>
 import { defineProps } from 'vue'
+import FlashCard from '../components/FlashCard.vue'
 
 const props = defineProps({
-  id: Number
+  id: String
 })
 </script>
 
 <template>
-  <h1>Section</h1>
-  {{ id }}
+  <h1>Section {{ id }}</h1>
+  <FlashCard :id="id"/>
 </template>
 
 <style scoped>

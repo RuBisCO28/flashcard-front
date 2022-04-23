@@ -3,7 +3,7 @@ import SectionList from '../components/SectionList.vue'
 import { defineProps } from 'vue'
 
 const props = defineProps({
-  id: Number
+  id: String
 })
 </script>
 
