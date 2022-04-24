@@ -85,10 +85,10 @@ export default defineComponent({
 }
 
 .card {
-  width: 30rem;
-  height: 20rem;
+  width: 21rem;
+  height: 14rem;
   cursor: pointer;
-  font-size: 2.0rem;
+  font-size: 1.4rem;
   perspective: 100px;
   margin: auto;
 }
@@ -107,7 +107,7 @@ export default defineComponent({
 
 .hbtn {
   color: #fff;
-  font-size: 2.0rem;
+  font-size: 1.5rem;
   width: 20rem;
   text-align: center;
   margin: 0 auto;
