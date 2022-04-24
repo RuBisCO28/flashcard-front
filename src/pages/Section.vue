@@ -8,12 +8,6 @@ const props = defineProps({
 </script>
 
 <template>
-  <h1>Section {{ id }}</h1>
   <FlashCard :id="id"/>
 </template>
 
-<style scoped>
-h1 {
-  text-align: center;
-}
-</style>

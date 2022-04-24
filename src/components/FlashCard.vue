@@ -1,55 +1,66 @@
 <template>
   <div class="container">
-    <div id="game" class="justify-center flex-column">
-      <div id="hud">
-        <div class="hud-item">
-          <p id="progressText" class="hud-prefix">Question</p>
-          <div id="progressBar">
-            <div id="progressBarFull"></div>
-          </div>
-        </div>
-      </div>
-      <div id="card">
-        <div id="card-front"></div>
-      </div>
-      <div id="flipcard" class="hbtn">FLIP</div>
-      <div id="correct" class="hbtn">OK</div>
-      <div id="incorrect" class="hbtn">NG</div>
+    <div class="hud">
+      <p class="hud-prefix">Question {{ countRef + 1 }} of {{ contents.length + countRef }}</p>
     </div>
+    <div class="card">
+      <div class="card-front">{{ currentDisplay }}</div>
+    </div>
+    <div id="flipcard" class="hbtn" @click="flipCard">FLIP</div>
+    <div id="correct" class="hbtn" @click="correct">OK</div>
+    <div id="incorrect" class="hbtn" @click="incorrect">NG</div>
   </div>
-  <!-- <div class="container">
-    <div v-for="content in data.contents" :key="content.id">
-      <div class="item">
-        <p>{{ `${content.question}` }}</p>
-        <p>{{ `${content.answer}` }}</p>
-      </div>
-    </div>
-  </div> -->
 </template>
 
 <script>
-import { defineComponent, reactive, onMounted } from 'vue'
-import axios from 'axios'
+import { defineComponent, ref } from 'vue'
+import useContents from '../composables/useContents'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'FlashCard',
   props: {
     id: {
       type: String,
+      required: true,
     }
   },
   setup(props) {
-    const data = reactive({
-      contents: [],
-    });
-    async function fetchSection() {
-      let result = await axios.get(`/fetch_section/${props.id}`);
-      data.contents = result.data.contents;
-    };
-    onMounted(() => {
-      fetchSection();
-    });
-    return { data, fetchSection };
+    let { contents, currentDisplay, fetchSection } = useContents(props.id)
+    let countRef = ref(0);
+    let stateRef = ref("closed");
+    let incorrectQuestions = ref("");
+    const router = useRouter()
+    return { contents, fetchSection, countRef, stateRef, currentDisplay, incorrectQuestions, router };
+  },
+  methods: {
+    flipCard() {
+      if (this.stateRef === "closed") {
+        this.stateRef = "open";
+        this.currentDisplay = this.contents[0].answer;
+      } else {
+        this.stateRef = "closed";
+        this.currentDisplay = this.contents[0].question;
+      }
+    },
+    correct() {
+      if (this.contents.length < 2) {
+        this.router.push(`/`);
+      } else {
+        this.contents.splice(0, 1);
+        this.currentDisplay = this.contents[0].question;
+        this.countRef += 1;
+      }
+    },
+    incorrect() {
+      if (this.contents.length < 2) {
+        this.router.push(`/`);
+      } else {
+        this.contents.splice(0, 1);
+        this.currentDisplay = this.contents[0].question;
+        this.countRef += 1;
+      }
+    }
   }
 });
 </script>
@@ -61,12 +72,54 @@ export default defineComponent({
   gap: 10px;
 }
 
-.item {
-  /* background: #0bd; */
+/* Heads up Display*/
+.hud {
   color: #000;
-  /* margin: 10px;
-  padding: 10px;
-  text-align: center; */
+  font-size: large;
+  text-align: center;
   font-family: 'Open Sans', sans-serif;
+}
+
+.hud-prefix {
+  font-size: 1.5rem;
+}
+
+.card {
+  width: 21rem;
+  height: 14rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  perspective: 100px;
+  margin: auto;
+}
+
+.card-front {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  position: absolute;
+  backface-visibility: hidden;
+  background: #fff;
+  color: #333;
+  border: 0.2rem solid rgb(69, 109, 218);
+}
+
+.hbtn {
+  color: #fff;
+  font-size: 1.5rem;
+  width: 20rem;
+  text-align: center;
+  margin: 0 auto;
+  padding: 7px;
+  border-radius: 5px;
+  margin-top: 3rem;
+  background: #00aaff;
+  box-shadow: 0 4px #0088cc;
+  cursor: pointer;
+}
+
+.hbtn:hover {
+  opacity: 0.8;
 }
 </style>
