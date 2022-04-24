@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// HomeビューとAboutビューのインポート
 import Home from "./pages/Home.vue";
 import Book from "./pages/Book.vue";
 import Section from "./pages/Section.vue";
