@@ -47,12 +47,13 @@ h1 {
 }
 
 .item {
-  background: #0bd;
-  color: #000;
+  background: #00aaff;
+  box-shadow: 0 4px #0088cc;
+  color: #fff;
+  font-size: 1.5rem;
+  text-align: center;
   margin: 10px;
   padding: 20px;
-  font-size: large;
-  text-align: center;
-  font-family: 'Open Sans', sans-serif;
+  border-radius: 5px;
 }
 </style>
