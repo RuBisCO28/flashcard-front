@@ -3,7 +3,7 @@
   <div class="container">
     <div v-for="section in data.sectionList" :key="section.id">
       <div class="item">
-        <a :href="sectionUrl(`${section.name}`)">{{ `section${section.name}` }}</a>
+        <a :href="sectionUrl(`${section.id}`)">{{ `${section.name}` }}</a>
       </div>
     </div>
   </div>
@@ -51,11 +51,13 @@ h1 {
 }
 
 .item {
-  background: #0bd;
-  color: #000;
+  background: #00aaff;
+  box-shadow: 0 4px #0088cc;
+  color: #fff;
+  font-size: 1.5rem;
   margin: 10px;
   padding: 10px;
   text-align: center;
-  font-family: 'Open Sans', sans-serif;
+  border-radius: 5px;
 }
 </style>
