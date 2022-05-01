@@ -1,6 +1,9 @@
 <template>
   <h1>Books</h1>
   <div class="container">
+    <div class="item">
+      <a href="/reviews">Review</a>
+    </div>
     <div v-for="book in data.bookList" :key="book.id">
       <div class="item">
         <a :href="bookUrl(`${book.id}`)">{{ `${book.name}` }}</a>

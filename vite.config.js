@@ -24,6 +24,24 @@ export default ({ mode }) => {
           changeOrigin: true,
           logLevel: "debug",
           rewrite: (path) => path.replace('/fetch_section', '/')
+        },
+        '^/fetch_reviews': {
+          target: `${process.env.VITE_FLASHCARD_API_URL}/reviews`,
+          changeOrigin: true,
+          logLevel: "debug",
+          rewrite: (path) => path.replace('/fetch_reviews', '/')
+        },
+        '^/register_wrong_questions': {
+          target: `${process.env.VITE_FLASHCARD_API_URL}/reviews`,
+          changeOrigin: true,
+          logLevel: "debug",
+          rewrite: (path) => path.replace('/register_wrong_questions', '/')
+        },
+        '^/unregister_correct_questions': {
+          target: `${process.env.VITE_FLASHCARD_API_URL}/reviews/destroy_multiple`,
+          changeOrigin: true,
+          logLevel: "debug",
+          rewrite: (path) => path.replace('/unregister_correct_questions', '/')
         }
       }
     }
