@@ -14,12 +14,12 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import useContents from '../composables/useContents'
+import useReviews from '../composables/useReviews'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 export default defineComponent({
-  name: 'FlashCard',
+  name: 'ReviewFlashCard',
   props: {
     id: {
       type: String,
@@ -27,12 +27,12 @@ export default defineComponent({
     }
   },
   setup(props) {
-    let { contents, currentDisplay, fetchSection } = useContents(props.id)
+    let { contents, currentDisplay, fetchReviews } = useReviews(props.id)
     let countRef = ref(0);
     let stateRef = ref("closed");
-    let incorrectQuestions = ref([]);
+    let correctQuestions = ref([]);
     const router = useRouter()
-    return { contents, fetchSection, countRef, stateRef, currentDisplay, incorrectQuestions, router };
+    return { contents, fetchReviews, countRef, stateRef, currentDisplay, correctQuestions, router };
   },
   methods: {
     flipCard() {
@@ -45,11 +45,25 @@ export default defineComponent({
       }
     },
     correct() {
+      this.correctQuestions.push(this.contents[0].id);
       if (this.contents.length < 2) {
-        const incorrectQuestions = this.incorrectQuestions.join();
-        if (incorrectQuestions) {
-          if(confirm('Submit?: ' + incorrectQuestions)){
-            this.submitIncorrectQuestions(incorrectQuestions);
+        const correctQuestions = this.correctQuestions.join();
+        if(confirm('Submit?: ' + correctQuestions)){
+          this.deleteCorrectQuestions(correctQuestions);
+          this.router.push(`/`);
+        }
+      } else {
+        this.contents.splice(0, 1);
+        this.currentDisplay = this.contents[0].question;
+        this.countRef += 1;
+      }
+    },
+    incorrect() {
+      if (this.contents.length < 2) {
+        const correctQuestions = this.correctQuestions.join();
+        if (correctQuestions) {
+          if(confirm('Submit?: ' + correctQuestions)){
+            this.deleteCorrectQuestions(correctQuestions);
           }
         }
         this.router.push(`/`);
@@ -59,23 +73,9 @@ export default defineComponent({
         this.countRef += 1;
       }
     },
-    incorrect() {
-      this.incorrectQuestions.push(this.contents[0].id);
-      if (this.contents.length < 2) {
-        const incorrectQuestions = this.incorrectQuestions.join();
-        if(confirm('Submit?: ' + incorrectQuestions)){
-          this.submitIncorrectQuestions(incorrectQuestions);
-          this.router.push(`/`);
-        }
-      } else {
-        this.contents.splice(0, 1);
-        this.currentDisplay = this.contents[0].question;
-        this.countRef += 1;
-      }
-    },
-    async submitIncorrectQuestions(incorrectQuestions) {
-      await axios.post('/register_wrong_questions', {
-        contents: incorrectQuestions,
+    async deleteCorrectQuestions(correctQuestions) {
+      await axios.delete('/unregister_correct_questions', {
+        data: {reviews: correctQuestions},
       });
     },
   }
